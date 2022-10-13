@@ -33,6 +33,22 @@
         <label for="">Description</label>
         {!! Form::text('description') !!}
     </div>
+
+    <div>
+        <label for="">API Provider</label>
+        {!! Form::select('apiID', $apis, '',
+                    ['placeholder' => 'Please select API', 'class' => 'form-control']) !!}
+    </div>
+
+    <div>
+        <label for="">Categories</label>
+        {!! form::select('category_id', $categories, '') !!}
+    </div>
+
+    <div>
+        <label for="">Status</label>
+        {!! form::select('status', $statuses, '') !!}
+    </div>
     
     <button type="submit">Create Product</button>
 

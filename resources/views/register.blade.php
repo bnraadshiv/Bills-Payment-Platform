@@ -8,6 +8,8 @@
 </head>
 <body>
 
+    <a href= "{{url('/login')}}">Login</a>
+
     @if(session('success'))
         <div class="alert alert-success"></div>
             {{session('success')}}

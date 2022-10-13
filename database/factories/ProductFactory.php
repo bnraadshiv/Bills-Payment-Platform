@@ -22,6 +22,7 @@ class ProductFactory extends Factory
             'image' => fake()->name(),
             'status' => 'active',
             'description' => fake()->name(50),
+            'apiID' => 1,
 
         ];
     }

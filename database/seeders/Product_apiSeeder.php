@@ -2,11 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\Product;
+use api;
+use App\Models\Product_api;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-class ProductSeeder extends Seeder
+class Product_apiSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,11 +16,10 @@ class ProductSeeder extends Seeder
      */
     public function run()
     {
-        //
-        Product::factory()->create([
-            'product_name' => "MTN Airtime",
-            'apiID' => 1,
 
+        Product_api::factory()->create([
+
+            'providerName' => 'PHED Direct',
 
         ]);
     }

@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-class ProductSeeder extends Seeder
+class CategorySeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,12 +15,7 @@ class ProductSeeder extends Seeder
      */
     public function run()
     {
-        //
-        Product::factory()->create([
-            'product_name' => "MTN Airtime",
-            'apiID' => 1,
+        Category::factory()->count(5)->create(); //This creates five for us
 
-
-        ]);
     }
 }

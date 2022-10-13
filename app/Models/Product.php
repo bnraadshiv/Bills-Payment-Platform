@@ -13,8 +13,25 @@ class Product extends Model
 
         'product_name',
         'status',
+        'category_id',
         'image',
         'description',
+        'apiID',
 
     ];
+
+
+    public function category() {
+
+        return $this->belongsTo(Category::class);
+    }
+
+    public function product_api() {
+
+        return $this->belongsTo(Product_api::class);
+    }
+
+
 }
+
+

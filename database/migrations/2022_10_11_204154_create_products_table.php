@@ -19,6 +19,11 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('status')->default('active');
             $table->string('description')->nullable();
+            $table->unsignedBigInteger('category_id')->nullable();
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->softDeletes();
+            $table->unsignedBigInteger('apiID')->nullable();
+            $table->foreign('apiID')->references('id')->on('product_api')->onDelete('cascade');
             $table->timestamps();
         });
     }
