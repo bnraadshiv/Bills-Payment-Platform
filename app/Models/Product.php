@@ -28,7 +28,7 @@ class Product extends Model
 
     public function product_api() {
 
-        return $this->belongsTo(Product_api::class);
+        return $this->belongsTo(Product_api::class, 'apiID');
     }
 
 
