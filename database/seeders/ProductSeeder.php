@@ -19,6 +19,7 @@ class ProductSeeder extends Seeder
         Product::factory()->create([
             'product_name' => "MTN Airtime",
             'apiID' => 1,
+            'provider_id' => 1,
 
 
         ]);

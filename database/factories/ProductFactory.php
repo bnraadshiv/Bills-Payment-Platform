@@ -23,6 +23,7 @@ class ProductFactory extends Factory
             'status' => 'active',
             'description' => fake()->name(50),
             'apiID' => 1,
+            'provider_id' => 1,
 
         ];
     }

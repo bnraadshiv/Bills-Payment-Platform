@@ -11,13 +11,13 @@
 
     No of products: {{ $products_count }}
 
-    <table>
+    <table border="1">
         <thead>
+            <th></th>
             <th>Product Name</th>
             <th>Categories</th>
-            <th>Image</th>
             <th>Status</th>
-            <th>Provider API</th>
+            <th>Provider </th>
             <th>Descirption</th>
             <th>action</th>
         </thead>
@@ -26,17 +26,25 @@
 
 
         <tr>
-            <td>{{ $product->product_name }}</td>
+            <td>
+                <img src="{{ $product->image_url }}" alt="" width="100">
+            </td>
+            <td>{{ $product->name }}
+                @if(!empty($product->deleted_at))
+                    <span style="color: red">[Deleted]</span>
+                @endif
+                </td>
             {{--<td>{{ $product->category->name ? $product->category->name  : 'No Category Found' }}</td> --}}
-            <td>{{ $product->category->name ??  'No Category Found' }}</td>
-            <td>{{ $product->image }}</td>
+            {{-- <td>{{ $product->category->name ??  'No Category Found' }}</td> --}}
+            <td>{{ $product->category_name ??  'No Category Found' }}</td> {{--Mutated this attribute from the model--}}
             <td>{{ $product->status }}</td>
-            <td>{{ $product->product_api->providerName ?? 'No API Provider'}}</td>
+            <td>{{ $product->provider->name ?? 'No API Provider'}}</td>
             
             <td>{{ $product->description }}</td>
             <td>
                 <a href="{{url('view-product', $product->id)}}">View</a>
                 <a href="{{route('view-single-product', ['id' => $product->id])}}">View</a>
+                <a href="{{route('delete-single-product', ['id' => $product->id])}}">Delete</a>
             </td>
         </tr>
 

@@ -1,9 +1,11 @@
 <?php
 
-use App\Http\Controllers\Product_apiController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\PagesController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\Product_apiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +42,9 @@ Route::get('products', [ProductController::class, 'allProducts'])->name('all-pro
 Route::get('view-product/{id}', [ProductController::class, 'viewProduct'])->name('view-single-product');
 
 
+Route::get('delete-product/{id}', [ProductController::class, 'deleteProduct'])->name('delete-single-product');
+
+
 Route::post('update-product/{id}', [ProductController::class, 'updateProduct'])->name('update-single-product');
 
 
@@ -52,5 +57,15 @@ Route::post('add-api', [Product_apiController::class, 'addAPIaction'])->name('ap
 Route::get('apis', [Product_apiController::class, 'viewAllApis'])->name('allApis');
 
 Route::get('api/{id}', [Product_apiController::class, 'viewSingleApi'])->name('singleApi');
+
+
+
+Route::get('dashboard', [PagesController::class, 'dashboard'])->name('dashboard');
+
+Route::get('login', [AuthController::class, 'login'])->name('login');
+
+Route::get('register', [AuthController::class, 'register'])->name('register');
+
+Route::get('forgotpassword', [AuthController::class, 'forgotpassword'])->name('forgotpassword');
 
 

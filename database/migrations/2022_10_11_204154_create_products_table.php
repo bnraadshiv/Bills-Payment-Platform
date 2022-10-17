@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('product_name');
+            $table->string('name');
+            $table->string('serviceID')->nullable();
             $table->string('image')->nullable();
             $table->string('status')->default('active');
             $table->string('description')->nullable();
@@ -24,6 +25,8 @@ return new class extends Migration
             $table->softDeletes();
             $table->unsignedBigInteger('apiID')->nullable();
             $table->foreign('apiID')->references('id')->on('product_api')->onDelete('cascade');
+            $table->unsignedBigInteger('provider_id')->nullable();
+            $table->foreign('provider_id')->references('id')->on('providers')->onDelete('cascade');
             $table->timestamps();
         });
     }

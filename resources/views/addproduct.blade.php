@@ -16,11 +16,25 @@
 
     @endif
 
+    @if($errors->any())
+        <div style="background: red; padding: 10px; ">
+            @foreach($errors->all() as $error)
+                <p style="color: white; ">{{ $error }}</p>
+            @endforeach
+        </div>
+
+    @endif
+
     {!! Form::open(['url' => 'addproduct']) !!}
 
     <div>
         <label for="">Product Name</label>
-        {!! Form::text('product_name') !!}
+        {!! Form::text('name') !!}
+    </div>
+
+    <div>
+        <label for="">Service ID</label>
+        {!! Form::text('serviceID') !!}
     </div>
 
 
@@ -35,9 +49,9 @@
     </div>
 
     <div>
-        <label for="">API Provider</label>
-        {!! Form::select('apiID', $apis, '',
-                    ['placeholder' => 'Please select API', 'class' => 'form-control']) !!}
+        <label for="">Provider</label>
+        {!! Form::select('provider_id', $providers, '',
+                    ['placeholder' => 'Please select Provider', 'class' => 'form-control']) !!}
     </div>
 
     <div>
