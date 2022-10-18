@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -36,19 +38,48 @@ class AuthController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        //Run a few checks
+        //Run a few checks 
 
-        //Create user account
+        //Create user account (Include role: Admin/Customer)
+        
+        $user = new User();
 
-        //Create customer instance
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
+        $user->phone_number = $request->phone_number;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+
+
+        if(!$user) {
+
+            return redirect()->back()->withError($user)->withInput();
+        }
+
+        //Create customer instance (customer_type: regular)
+
+        $customer = $user->customer()->create([
+
+            'user_id' => $user->id,
+            'cutsomer_type' => "regular"
+
+        ]);
 
         //Create wallet instance
+         $wallet = $customer->wallet()->create([
+
+             'balance' => "0.6"
+         ]);
 
         //Send activation email
 
         //Send SMS
 
         //Retrun success message
+
+        //Admins
 
         //Write test
 
