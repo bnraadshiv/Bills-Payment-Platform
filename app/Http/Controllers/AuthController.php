@@ -3,13 +3,30 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Mail\ActivationMail;
 use Illuminate\Http\Request;
+use App\ServiceProviders\Termii;
+use App\ServiceProviders\SmsClone;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use App\Notifications\ActivationNotification;
 
 class AuthController extends Controller
 {
     //
+    protected $smsClone;
+
+    public function __construct(SmsClone $smsClone, Termii $Termii) {
+
+        $this->smsClone = $smsClone;
+
+        $this->Termii = $Termii;
+
+        $this->smsservice = "termii";
+
+    }
 
     public function login() {
 
@@ -42,6 +59,8 @@ class AuthController extends Controller
 
         //Create user account (Include role: Admin/Customer)
         
+        DB::beginTransaction(); 
+
         $user = new User();
 
         $user->first_name = $request->first_name;
@@ -62,7 +81,6 @@ class AuthController extends Controller
 
         $customer = $user->customer()->create([
 
-            'user_id' => $user->id,
             'cutsomer_type' => "regular"
 
         ]);
@@ -73,13 +91,73 @@ class AuthController extends Controller
              'balance' => "0.6"
          ]);
 
+         
+
         //Send activation email
 
-        //Send SMS
+        //Methid Three - using notifictaion
+        $user->notify(( new ActivationNotification($user))->delay(now()->addSeconds(30)));
+        
 
+        // //Method Two
+        // Mail::to($user->email)->send(new ActivationMail($user));
+
+        //Method One
+        // $mail_details = [
+        //     //This pass parametrs to the veiw
+        //     'name' => $user->first_name,
+        //     'email' => $user->email,
+        //     'subject' => "Account activation",
+        //     'mailmessage' => "Your account has been succesfully created",
+        //     'link' => 'http://localhost/welcome'
+        // ];
+
+
+
+        // Mail::send('emails.welcome', $mail_details, function($m) use ($user){
+
+        //     $m->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
+        //     $m->to($user->email);
+        //     $m->subject('welcome to' .env('APP_NAME'));
+        
+        // });
+
+        /**********
+         * 
+         * Send SMS
+         ***********/
+
+        $sms = "Welcome to our Bills payment platform. Regards.";
+
+        if ($this->smsservice == "smsclone") {
+
+
+            //Send SMS with SMSclone
+            $sms_action = $this->smsClone->sendSMS($user->phone_number, $sms);
+
+
+        } else {
+
+
+            //Send SMS with Termii
+            // $sms2 = new Termii();
+            // $sms_action2 = $sms2->sendSMS($user->phone_number, $sms);
+            
+            $sms_action = $this->Termii->sendSMS($user->phone_number, $sms);
+
+
+        }
+
+
+         if($sms_action['status'] == "failed") {
+
+            return redirect()->back()->withErrors($sms_action['message'])->withInput();
+        }
+
+
+
+        DB::commit();
         //Retrun success message
-
-        //Admins
 
         //Write test
 
