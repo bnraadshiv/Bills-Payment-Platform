@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\Product_apiController;
 
 /*
@@ -60,15 +61,49 @@ Route::get('api/{id}', [Product_apiController::class, 'viewSingleApi'])->name('s
 
 
 
-Route::get('dashboard', [PagesController::class, 'dashboard'])->name('dashboard');
 
 Route::get('login', [AuthController::class, 'login'])->name('login');
+
+Route::post('login', [AuthController::class, 'loginAction'])->name('loginAction');
 
 Route::get('register', [AuthController::class, 'register'])->name('register');
 
 Route::post('register', [AuthController::class, 'registerAction'])->name('registerAction');
 
 Route::get('forgotpassword', [AuthController::class, 'forgotpassword'])->name('forgotpassword');
+
+Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+
+
+
+Route::group(['prefix' => 'customer', 'middleware' => 'auth'], function() {
+
+    //Pages Actions
+    Route::get('dashboard', [PagesController::class, 'dashboard'])->name('customer_dashboard');
+
+    //Customer Action
+
+    Route::get('profile', [CustomerController::class, 'profile'])->name('customer_profile');
+
+    Route::post('update-profile', [CustomerController::class, 'updateProfile'])->name('customer_update_profile');
+
+    Route::post('update-profile-image', [CustomerController::class, 'uploadImage'])->name('customer_update_profile_image');
+
+
+    Route::get('update-password', [CustomerController::class, 'updatePassword'])->name('customer_update_password');
+
+
+    Route::post('update-password', [CustomerController::class, 'updatePasswordAction'])->name('customer_update_passwordAction');
+
+    Route::get('pin-setup', [CustomerController::class, 'createCustomerPin'])->name('customer_pin');
+
+    Route::post('pin-stup', [CustomerController::class, 'createPinAction'])->name('createPinAction');
+
+    Route::post('pin-update', [CustomerController::class, 'updatePinAction'])->name('customer_updatePin');
+
+    
+    
+});
 
 
 

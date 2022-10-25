@@ -23,7 +23,10 @@ return new class extends Migration
             $table->string('status')->default('active');
             $table->string('role')->default('user');
             $table->string('password');
+            $table->string('pin')->nullable();
+            $table->string('avatar')->nullable();
             $table->rememberToken();
+            $table->timestamp('last_login_date')->nullable();
             $table->timestamps();
         });
     }

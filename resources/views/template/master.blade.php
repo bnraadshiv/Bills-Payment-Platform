@@ -25,17 +25,22 @@
                 </div>
             </form>
             <!-- Navbar-->
+
+            @auth
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Settings</a></li>
-                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                        <li><a class="dropdown-item" href="{{route('customer_profile')}}">Profile</a></li>
+                        <li><a class="dropdown-item" href="{{route('customer_pin')}}">Pin Setting</a></li>
+                        <li><a class="dropdown-item" href="{{ route('customer_update_password') }}">Password Setting</a></li>
                         <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="#!">Logout</a></li>
+                        <li><a class="dropdown-item" href="{{route('logout')}}">Logout</a></li>
                     </ul>
                 </li>
             </ul>
+            @endauth
+
         </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
@@ -45,6 +50,8 @@
                 <main>
                     <div class="container-fluid px-4">
                         <h1 class="mt-4">@yield('title')</h1>
+
+                        @include('template.includes.alerts')
                         
                         @yield('content')
 
