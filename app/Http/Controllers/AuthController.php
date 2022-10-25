@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\ServiceProviders\Termii;
 use App\ServiceProviders\SmsClone;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -149,10 +150,10 @@ class AuthController extends Controller
         }
 
 
-         if($sms_action['status'] == "failed") {
+        //  if($sms_action['status'] == "failed") {
 
-            return redirect()->back()->withErrors($sms_action['message'])->withInput();
-        }
+        //     return redirect()->back()->withErrors($sms_action['message'])->withInput();
+        // }
 
 
 
@@ -161,7 +162,7 @@ class AuthController extends Controller
 
         //Write test
 
-
+        return redirect()->route('login')->with('success', 'Account was successfully registered');
 
     }
 
@@ -170,4 +171,55 @@ class AuthController extends Controller
         $data['title'] = "Forgot Password";
         return view('template.auth.forgotpassword', $data);
     }
+
+
+    public function loginAction(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|exists:users,email',
+            'password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+
+        $auth = Auth::attempt(['email' => $request->email, 'password' => $request->password]);
+
+       // $auth = Auth::attempt($request->only('email', 'password')); //Can use of you are sure the name if the fields corresponds
+
+        if($auth) {
+
+            $user = auth()->user(); 
+            // or $user = Auth::user();  This requires impoorting the facade hence can't be used uin a blade
+
+            //Check for status
+
+            //check for roles
+
+            //update last login
+
+            $user->update([
+
+                'last_login_date' => now(),
+            ]);
+
+            
+            return redirect()->route('customer_dashboard')->with('success', 'Login was successful, welcome!');
+        }
+
+        return redirect()->back()->withErrors('Invalid username or password');
+
+
+    }
+
+
+    public function logout() {
+
+        Auth::logout();
+        return redirect()->route('login')->with('success', 'You have logged out successfully');
+    }
+
 }

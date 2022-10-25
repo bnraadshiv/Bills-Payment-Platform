@@ -61,8 +61,12 @@
                             </a>
                         </div>
                     </div>
-                    <div class="sb-sidenav-footer">
-                        <div class="small">Logged in as:</div>
-                        Start Bootstrap
-                    </div>
+                    @auth
+                        <div class="sb-sidenav-footer">
+                            
+                            <div class="small">Logged in as:</div>
+                            {{auth()->user()->first_name  . " " .auth()->user()->last_name}}
+                            
+                        </div>
+                    @endauth
                 </nav>

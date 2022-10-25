@@ -12,6 +12,7 @@ class PagesController extends Controller
 
         $data['title'] = "Dashboard";
         $data['description'] = "<h2>Welcome to our dashboard</h2>";
-        return view('template.dashboard', $data);
+        $data['user'] = auth()->user();
+        return view('template.customer.dashboard', $data);
     }
 }

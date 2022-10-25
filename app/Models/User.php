@@ -24,7 +24,10 @@ class User extends Authenticatable
         'password',
         'phone_number',
         'role',
-        'status'
+        'status',
+        'last_login_date',
+        'pin',
+        'avatar'
     ];
 
     /**
@@ -51,4 +54,9 @@ class User extends Authenticatable
 
         return $this->hasOne(Customer::class);
     }
+
+    public function getAvatarUrlAttribute(){
+
+        return $this->avatar ? url('site-resources/avatar/' .$this->avatar) : url('template/assets/img/avatar.png');
+}
 }
